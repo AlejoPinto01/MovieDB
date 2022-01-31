@@ -2,8 +2,16 @@ import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/cupertino.dart';
+import 'package:practica_final_2/models/models.dart';
 
 class MoviesProvider extends ChangeNotifier {
+  String _baseUrl = 'api.themoviedb.org';
+  String _apiKey = 'b484e3e33832dcea7c4887cec5124533';
+  String _language = 'es-ES';
+  String _page = '1';
+
+  List<Movie> onDisplayMovie = [];
+
   MoviesProvider() {
     print('Provider inicializado');
     this.getOnDisplayMovies();
@@ -13,18 +21,17 @@ class MoviesProvider extends ChangeNotifier {
     print('getOnDisplayMovies');
     // This example uses the Google Books API to search for books about http.
     // https://developers.google.com/books/docs/overview
-    var url =
-        Uri.https('www.googleapis.com', '/books/v1/volumes', {'q': '{http}'});
+    var url = Uri.https(_baseUrl, '/3/movie/now_playing', {
+      'api_key': _apiKey,
+      'language': _language,
+      'page': _page,
+    });
 
-    // Await the http get response, then decode the json-formatted response.
-    var response = await http.get(url);
-    if (response.statusCode == 200) {
-      var jsonResponse =
-          convert.jsonDecode(response.body) as Map<String, dynamic>;
-      var itemCount = jsonResponse['totalItems'];
-      print('Number of books about http: $itemCount.');
-    } else {
-      print('Request failed with status: ${response.statusCode}.');
-    }
+    final result = await http.get(url);
+    final nowPlayingResponse = NowPlayingResponse.fromJson(result.body);
+
+    onDisplayMovie = nowPlayingResponse.movies;
+
+    notifyListeners();
   }
 }
