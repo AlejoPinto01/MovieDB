@@ -1,5 +1,3 @@
-import 'models.dart';
-
 class Movie {
   Movie({
     required this.adult,
@@ -33,14 +31,13 @@ class Movie {
   double voteAverage;
   int voteCount;
 
-  factory Movie.fromJson(String str) => Movie.fromMap(json.decode(str));
+  //factory Movie.fromJson(String str) => Movie.fromMap(json.decode(str));
 
   //String toJson() => json.encode(toMap());
 
   factory Movie.fromMap(Map<String, dynamic> json) => Movie(
         adult: json["adult"],
-        backdropPath:
-            json["backdrop_path"] == null ? null : json["backdrop_path"],
+        backdropPath: json["backdrop_path"],
         genreIds: List<int>.from(json["genre_ids"].map((x) => x)),
         id: json["id"],
         originalLanguage: json["original_language"],
@@ -56,42 +53,41 @@ class Movie {
       );
 
   // Map<String, dynamic> toMap() => {
-  //       "adult": adult,
-  //       "backdrop_path": backdropPath == null ? null : backdropPath,
-  //       "genre_ids": List<dynamic>.from(genreIds.map((x) => x)),
-  //       "id": id,
-  //       "original_language": originalLanguageValues.reverse[originalLanguage],
-  //       "original_title": originalTitle,
-  //       "overview": overview,
-  //       "popularity": popularity,
-  //       "poster_path": posterPath,
-  //       "release_date":
-  //           "${releaseDate.year.toString().padLeft(4, '0')}-${releaseDate.month.toString().padLeft(2, '0')}-${releaseDate.day.toString().padLeft(2, '0')}",
-  //       "title": title,
-  //       "video": video,
-  //       "vote_average": voteAverage,
-  //       "vote_count": voteCount,
-  //     };
+  //     "adult": adult,
+  //     "backdrop_path": backdropPath == null ? null : backdropPath,
+  //     "genre_ids": List<dynamic>.from(genreIds.map((x) => x)),
+  //     "id": id,
+  //     "original_language": originalLanguageValues.reverse[originalLanguage],
+  //     "original_title": originalTitle,
+  //     "overview": overview,
+  //     "popularity": popularity,
+  //     "poster_path": posterPath,
+  //     "release_date": "${releaseDate.year.toString().padLeft(4, '0')}-${releaseDate.month.toString().padLeft(2, '0')}-${releaseDate.day.toString().padLeft(2, '0')}",
+  //     "title": title,
+  //     "video": video,
+  //     "vote_average": voteAverage,
+  //     "vote_count": voteCount,
+  // };
 }
 
 // enum OriginalLanguage { EN, ES, FR }
 
 // final originalLanguageValues = EnumValues({
-//   "en": OriginalLanguage.EN,
-//   "es": OriginalLanguage.ES,
-//   "fr": OriginalLanguage.FR
+//     "en": OriginalLanguage.EN,
+//     "es": OriginalLanguage.ES,
+//     "fr": OriginalLanguage.FR
 // });
 
 // class EnumValues<T> {
-//   Map<String, T> map;
-//   Map<T, String> reverseMap;
+//     Map<String, T> map;
+//     Map<T, String> reverseMap;
 
-//   EnumValues(this.map);
+//     EnumValues(this.map);
 
-//   Map<T, String> get reverse {
-//     if (reverseMap == null) {
-//       reverseMap = map.map((k, v) => new MapEntry(v, k));
+//     Map<T, String> get reverse {
+//         if (reverseMap == null) {
+//             reverseMap = map.map((k, v) => new MapEntry(v, k));
+//         }
+//         return reverseMap;
 //     }
-//     return reverseMap;
-//   }
 // }

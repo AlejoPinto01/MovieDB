@@ -1,7 +1,7 @@
 import 'dart:convert' as convert;
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:flutter/cupertino.dart';
 import 'package:practica_final_2/models/models.dart';
 
 class MoviesProvider extends ChangeNotifier {
@@ -19,8 +19,6 @@ class MoviesProvider extends ChangeNotifier {
 
   getOnDisplayMovies() async {
     print('getOnDisplayMovies');
-    // This example uses the Google Books API to search for books about http.
-    // https://developers.google.com/books/docs/overview
     var url = Uri.https(_baseUrl, '/3/movie/now_playing', {
       'api_key': _apiKey,
       'language': _language,
@@ -30,7 +28,7 @@ class MoviesProvider extends ChangeNotifier {
     final result = await http.get(url);
     final nowPlayingResponse = NowPlayingResponse.fromJson(result.body);
 
-    onDisplayMovie = nowPlayingResponse.movies;
+    onDisplayMovie = nowPlayingResponse.results;
 
     notifyListeners();
   }
