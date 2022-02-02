@@ -1,34 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:practica_final_2/models/models.dart';
 import 'package:practica_final_2/widgets/widgets.dart';
 
 class DetailsScreen extends StatelessWidget {
-
-  
   @override
   Widget build(BuildContext context) {
     // TODO: Canviar després per una instància de Peli
-    final String peli = ModalRoute.of(context)?.settings.arguments.toString() ?? 'no-movie';
-
+    final movie = ModalRoute.of(context)!.settings.arguments as Movie;
+    print(movie.id.toString());
     return Scaffold(
-        body: CustomScrollView(
-          slivers: [
-            _CustomAppBar(),
-            SliverList(
-              delegate: SliverChildListDelegate([
-                _PosterAndTitile(),
-                _Overview(),
-                _Overview(),
-                CastingCards()
-              ])
-            )
-          ],
-        )
+      body: CustomScrollView(
+        slivers: [
+          _CustomAppBar(movie: movie),
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                _PosterAndTitile(movie: movie),
+                _Overview(
+                  movie: movie,
+                ),
+                CastingCards(),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
 
 class _CustomAppBar extends StatelessWidget {
+  final Movie movie;
 
+  const _CustomAppBar({
+    Key? key,
+    required this.movie,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     // Exactament igual que la AppBaer però amb bon comportament davant scroll
@@ -46,15 +53,13 @@ class _CustomAppBar extends StatelessWidget {
           color: Colors.black12,
           padding: EdgeInsets.only(bottom: 10),
           child: Text(
-            'Títol peli',
-            style: TextStyle(fontSize: 16)
-            ,
+            movie.getMovieTitle,
+            style: TextStyle(fontSize: 16),
           ),
         ),
-
         background: FadeInImage(
           placeholder: AssetImage('assets/loading.gif'),
-          image: NetworkImage('https://via.placeholder.com/500x300'),
+          image: NetworkImage(movie.fullBackdropPath),
           fit: BoxFit.cover,
         ),
       ),
@@ -63,7 +68,12 @@ class _CustomAppBar extends StatelessWidget {
 }
 
 class _PosterAndTitile extends StatelessWidget {
-  
+  final Movie movie;
+
+  const _PosterAndTitile({
+    Key? key,
+    required this.movie,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -77,21 +87,35 @@ class _PosterAndTitile extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             child: FadeInImage(
               placeholder: AssetImage('assets/loading.gif'),
-              image: NetworkImage('https://via.placeholder.com/200x300'),
+              image: NetworkImage(movie.fullPosterPath),
               height: 150,
             ),
           ),
-          SizedBox(width: 20,),
+          SizedBox(
+            width: 20,
+          ),
           Column(
             children: [
-              Text('Títol peli', style: textTheme.headline5, overflow: TextOverflow.ellipsis, maxLines: 2,),
-              Text('Títol original', style: textTheme.subtitle1, overflow: TextOverflow.ellipsis, maxLines: 2,),
+              Text(
+                movie.getMovieTitle,
+                style: textTheme.headline5,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+              ),
+              Text(
+                movie.getOriginalTitle,
+                style: textTheme.subtitle1,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+              ),
               Row(
                 children: [
-                  Icon(Icons.star_outline,size: 15, color: Colors.grey),
-                  SizedBox(width: 5,),
-                  Text('Nota mitjana', style: textTheme.caption),
-
+                  Icon(Icons.star_outline, size: 15, color: Colors.grey),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text(movie.getVoteAverage.toString(),
+                      style: textTheme.caption),
                 ],
               )
             ],
@@ -103,13 +127,18 @@ class _PosterAndTitile extends StatelessWidget {
 }
 
 class _Overview extends StatelessWidget {
+  final Movie movie;
 
+  const _Overview({
+    Key? key,
+    required this.movie,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Text(
-        'Labore eiusmod ad reprehenderit irure eu sunt ex minim. Lorem fugiat Lorem proident duis ea cupidatat. Commodo duis culpa reprehenderit ad elit. Velit duis officia reprehenderit ullamco sint id anim officia est. Enim mollit nisi et exercitation dolore commodo. Cillum mollit laborum non nulla cillum non do reprehenderit Lorem deserunt ex eu sunt do.',
+        movie.getOverview,
         textAlign: TextAlign.justify,
         style: Theme.of(context).textTheme.subtitle1,
       ),

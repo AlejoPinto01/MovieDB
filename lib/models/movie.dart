@@ -24,12 +24,42 @@ class Movie {
   String originalTitle;
   String overview;
   double popularity;
-  String posterPath;
+  String? posterPath;
   DateTime releaseDate;
   String title;
   bool video;
   double voteAverage;
   int voteCount;
+
+  get fullPosterPath {
+    if (this.posterPath != null) {
+      return 'https://image.tmdb.org/t/p/w500/${posterPath}';
+    }
+    return 'https://i.stack.imgur.com/GNhxO.png';
+  }
+
+  get fullBackdropPath {
+    if (this.posterPath != null) {
+      return 'https://image.tmdb.org/t/p/w500/${backdropPath}';
+    }
+    return 'https://i.stack.imgur.com/GNhxO.png';
+  }
+
+  get getOriginalTitle {
+    return originalTitle;
+  }
+
+  get getMovieTitle {
+    return title;
+  }
+
+  get getVoteAverage {
+    return voteAverage;
+  }
+
+  get getOverview {
+    return overview;
+  }
 
   //factory Movie.fromJson(String str) => Movie.fromMap(json.decode(str));
 
