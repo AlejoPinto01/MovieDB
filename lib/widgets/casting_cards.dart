@@ -1,29 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:practica_final_2/models/models.dart';
 
 class CastingCards extends StatelessWidget {
+  final List<Cast> casting;
+
+  const CastingCards({
+    Key? key,
+    required this.casting,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print(casting);
     return Container(
       margin: EdgeInsets.only(bottom: 30),
       width: double.infinity,
       height: 180,
       // color: Colors.red,
       child: ListView.builder(
-        itemCount: 10,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (BuildContext context, int index) => _CastCard()
-      ),
+          itemCount: casting.length,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (BuildContext context, int index) => _CastCard()),
     );
   }
 }
 
 class _CastCard extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric( horizontal: 10),
+      margin: EdgeInsets.symmetric(horizontal: 10),
       width: 110,
       height: 100,
       // color: Colors.green,
@@ -39,12 +45,15 @@ class _CastCard extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          SizedBox(height: 5,),
+          SizedBox(
+            height: 5,
+          ),
           Text(
             'Nom Actor',
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,)
+            textAlign: TextAlign.center,
+          )
         ],
       ),
     );

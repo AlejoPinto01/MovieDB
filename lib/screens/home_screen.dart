@@ -15,7 +15,14 @@ class HomeScreen extends StatelessWidget {
         title: Text('Cartellera'),
         elevation: 0,
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.search_outlined))
+          IconButton(
+              onPressed: () {
+                showSearch(
+                  context: context,
+                  delegate: CustomSearchDelegate(),
+                );
+              },
+              icon: Icon(Icons.search_outlined))
         ],
       ),
       body: SingleChildScrollView(
@@ -35,5 +42,41 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class CustomSearchDelegate extends SearchDelegate {
+  List<String> searchTerms = [];
+
+  @override
+  List<Widget>? buildActions(BuildContext context) {
+    return [
+      IconButton(
+        onPressed: () {
+          query = '';
+        },
+        icon: const Icon(Icons.clear),
+      ),
+    ];
+  }
+
+  @override
+  Widget? buildLeading(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        close(context, null);
+      },
+      icon: const Icon(Icons.arrow_back),
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return Text('data');
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    return Text('data');
   }
 }

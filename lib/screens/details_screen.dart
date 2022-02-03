@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:practica_final_2/models/models.dart';
+import 'package:practica_final_2/providers/movies_provider.dart';
 import 'package:practica_final_2/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
 class DetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final moviesProvider = Provider.of<MoviesProvider>(context);
     // TODO: Canviar després per una instància de Peli
     final movie = ModalRoute.of(context)!.settings.arguments as Movie;
     print(movie.id.toString());
+    moviesProvider.getCasting(movie.id);
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -19,7 +23,9 @@ class DetailsScreen extends StatelessWidget {
                 _Overview(
                   movie: movie,
                 ),
-                CastingCards(),
+                CastingCards(
+                  casting: moviesProvider.casting,
+                ),
               ],
             ),
           ),
@@ -48,7 +54,6 @@ class _CustomAppBar extends StatelessWidget {
         centerTitle: true,
         titlePadding: EdgeInsets.all(0),
         title: Container(
-          width: double.infinity,
           alignment: Alignment.bottomCenter,
           color: Colors.black12,
           padding: EdgeInsets.only(bottom: 10),
@@ -136,7 +141,7 @@ class _Overview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: Text(
         movie.getOverview,
         textAlign: TextAlign.justify,
