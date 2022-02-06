@@ -14,7 +14,8 @@ class MoviesProvider extends ChangeNotifier {
 
   List<Movie> onDisplayMovies = [];
   List<Movie> popularMovies = [];
-  List<Cast> casting = [];
+  Map<int, List<Cast>> casting = {};
+  //List<Cast> casting = [];
 
   MoviesProvider() {
     print('Provider inicializado');
@@ -54,9 +55,9 @@ class MoviesProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  getCasting(int movieId) async {
+  Future<List<Cast>> getCasting(int movieId) async {
     //https://api.themoviedb.org/3/movie/634649/credits?api_key=b484e3e33832dcea7c4887cec5124533&language=en-US
-    var url = Uri.https(_baseUrl, '/3/movie/${movieId}', {
+    var url = Uri.https(_baseUrl, '/3/movie/${movieId}/credits', {
       'api_key': _apiKey,
       'language': _language,
       'page': _page,
@@ -65,8 +66,8 @@ class MoviesProvider extends ChangeNotifier {
     final result = await http.get(url);
     final castingResponse = CastingResponse.fromJson(result.body);
 
-    casting = castingResponse.cast;
+    casting[movieId] = castingResponse.cast;
 
-    notifyListeners();
+    return castingResponse.cast;
   }
 }

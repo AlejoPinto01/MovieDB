@@ -7,11 +7,9 @@ import 'package:provider/provider.dart';
 class DetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final moviesProvider = Provider.of<MoviesProvider>(context);
     // TODO: Canviar després per una instància de Peli
     final movie = ModalRoute.of(context)!.settings.arguments as Movie;
     print(movie.id.toString());
-    moviesProvider.getCasting(movie.id);
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -24,7 +22,7 @@ class DetailsScreen extends StatelessWidget {
                   movie: movie,
                 ),
                 CastingCards(
-                  casting: moviesProvider.casting,
+                  movieId: movie.id,
                 ),
               ],
             ),
@@ -99,31 +97,35 @@ class _PosterAndTitile extends StatelessWidget {
           SizedBox(
             width: 20,
           ),
-          Column(
-            children: [
-              Text(
-                movie.getMovieTitle,
-                style: textTheme.headline5,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-              ),
-              Text(
-                movie.getOriginalTitle,
-                style: textTheme.subtitle1,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-              ),
-              Row(
-                children: [
-                  Icon(Icons.star_outline, size: 15, color: Colors.grey),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Text(movie.getVoteAverage.toString(),
-                      style: textTheme.caption),
-                ],
-              )
-            ],
+          Container(
+            width: MediaQuery.of(context).size.width - 170,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  movie.getMovieTitle,
+                  style: textTheme.headline5,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                ),
+                Text(
+                  movie.getOriginalTitle,
+                  style: textTheme.subtitle1,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                ),
+                Row(
+                  children: [
+                    Icon(Icons.star_outline, size: 15, color: Colors.grey),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(movie.getVoteAverage.toString(),
+                        style: textTheme.caption),
+                  ],
+                )
+              ],
+            ),
           )
         ],
       ),

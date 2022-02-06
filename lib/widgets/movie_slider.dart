@@ -39,6 +39,7 @@ class MovieSlider extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
+                physics: BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
                 itemCount: 20,
                 itemBuilder: (_, int index) =>

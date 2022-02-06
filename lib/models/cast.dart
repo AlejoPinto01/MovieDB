@@ -25,13 +25,24 @@ class Cast {
   String name;
   String originalName;
   double popularity;
-  String profilePath;
-  int castId;
-  String character;
+  String? profilePath;
+  int? castId;
+  String? character;
   String creditId;
-  int order;
-  String department;
-  String job;
+  int? order;
+  String? department;
+  String? job;
+
+  get getFullProfilePath {
+    if (this.profilePath != null) {
+      return 'https://image.tmdb.org/t/p/w500${profilePath}';
+    }
+    return 'https://i.stack.imgur.com/GNhxO.png';
+  }
+
+  get getActorName {
+    return this.name;
+  }
 
   factory Cast.fromJson(String str) => Cast.fromMap(json.decode(str));
 
