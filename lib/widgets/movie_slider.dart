@@ -39,11 +39,11 @@ class MovieSlider extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
-                physics: BouncingScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                itemCount: 20,
-                itemBuilder: (_, int index) =>
-                    _MoviePoster(movie: movies[index])),
+              physics: BouncingScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              itemCount: 20,
+              itemBuilder: (_, int index) => _MoviePoster(movie: movies[index]),
+            ),
           )
         ],
       ),
@@ -64,12 +64,12 @@ class _MoviePoster extends StatelessWidget {
     return Container(
       width: 130,
       height: 190,
-      // color: Colors.green,
       margin: EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         children: [
           GestureDetector(
             onTap: () =>
+                //Abre la pantalla de detalles de la pelicula pasada por parametro
                 Navigator.pushNamed(context, 'details', arguments: movie),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),

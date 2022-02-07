@@ -1,10 +1,6 @@
-import 'dart:convert' as convert;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:practica_final_2/models/casting_response.dart';
-
 import 'package:practica_final_2/models/models.dart';
-import 'package:practica_final_2/models/popular_response.dart';
 
 class MoviesProvider extends ChangeNotifier {
   String _baseUrl = 'api.themoviedb.org';
@@ -16,7 +12,6 @@ class MoviesProvider extends ChangeNotifier {
   List<Movie> popularMovies = [];
   List<Movie> searchMovies = [];
   Map<int, List<Cast>> casting = {};
-  //List<Cast> casting = [];
 
   MoviesProvider() {
     print('Provider inicializado');
@@ -24,6 +19,7 @@ class MoviesProvider extends ChangeNotifier {
     this.getPopularMovies();
   }
 
+  //Metodo que retorna una lista de Movies
   getPopularMovies() async {
     print('getPopularMovies');
     var url = Uri.https(_baseUrl, '/3/movie/popular', {
@@ -33,13 +29,14 @@ class MoviesProvider extends ChangeNotifier {
     });
 
     final result = await http.get(url);
-    final popularResponse = PopularResponse.fromJson(result.body);
+    final popularResponse = MoviesResponse.fromJson(result.body);
 
     popularMovies = popularResponse.results;
 
     notifyListeners();
   }
 
+  //Metodo que retorna una lista de Movies
   getOnDisplayMovies() async {
     print('getOnDisplayMovies');
     var url = Uri.https(_baseUrl, '/3/movie/now_playing', {
@@ -49,15 +46,16 @@ class MoviesProvider extends ChangeNotifier {
     });
 
     final result = await http.get(url);
-    final nowPlayingResponse = NowPlayingResponse.fromJson(result.body);
+    final nowPlayingResponse = MoviesResponse.fromJson(result.body);
 
     onDisplayMovies = nowPlayingResponse.results;
 
     notifyListeners();
   }
 
+  //Metodo que recibe un ID de Movie y devuelve un Future que construira la lista de actores por dicha Movie
   Future<List<Cast>> getCasting(int movieId) async {
-    //https://api.themoviedb.org/3/movie/634649/credits?api_key=b484e3e33832dcea7c4887cec5124533&language=en-US
+    //concatena el ID a la URI
     var url = Uri.https(_baseUrl, '/3/movie/${movieId}/credits', {
       'api_key': _apiKey,
       'language': _language,
@@ -72,8 +70,8 @@ class MoviesProvider extends ChangeNotifier {
     return castingResponse.cast;
   }
 
+  //Metodo que recibe la busqueda del usuario y devuelve un Future que construira la lista de peliculas que culplan con la busqueda
   Future<List<Movie>> getFilter(String filter) async {
-    //https://api.themoviedb.org/3/movie/634649/credits?api_key=b484e3e33832dcea7c4887cec5124533&language=en-US
     var url = Uri.https(_baseUrl, '/3/search/movie', {
       'api_key': _apiKey,
       'language': _language,
@@ -82,7 +80,7 @@ class MoviesProvider extends ChangeNotifier {
     });
 
     final result = await http.get(url);
-    final searchResponse = SearchResponse.fromJson(result.body);
+    final searchResponse = MoviesResponse.fromJson(result.body);
 
     searchMovies = searchResponse.results;
 

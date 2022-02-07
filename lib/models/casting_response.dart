@@ -1,9 +1,3 @@
-// To parse this JSON data, do
-//
-//     final castingResponse = castingResponseFromMap(jsonString);
-
-import 'dart:convert';
-
 import 'models.dart';
 
 class CastingResponse {

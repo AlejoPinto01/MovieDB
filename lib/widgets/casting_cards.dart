@@ -15,23 +15,28 @@ class CastingCards extends StatelessWidget {
   Widget build(BuildContext context) {
     final moviesProvider = Provider.of<MoviesProvider>(context, listen: false);
 
+    //Contruccion de la lista
     return FutureBuilder(
+      //Recupera el Future de la lista de actores del proveedor
       future: moviesProvider.getCasting(movieId),
       builder: (BuildContext context, AsyncSnapshot<List<Cast>> snapshot) {
+        //Si NO recupera contenido
         if (!snapshot.hasData) {
           return Container(
             child: Center(
+              //Mostrar carga
               child: CircularProgressIndicator(),
             ),
           );
         } else {
+          //Guardar la informacion recuperada en una variable
           final casting = snapshot.data!;
 
           return Container(
             margin: EdgeInsets.only(bottom: 30),
             width: double.infinity,
             height: 180,
-            // color: Colors.red,
+            //Contruye una lista de los actores recuperados
             child: ListView.builder(
               physics: BouncingScrollPhysics(),
               itemCount: casting.length,
@@ -46,6 +51,7 @@ class CastingCards extends StatelessWidget {
   }
 }
 
+//Carta para cada actor individual que compondra la lista
 class _CastCard extends StatelessWidget {
   final Cast actor;
 
@@ -57,7 +63,6 @@ class _CastCard extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 10),
       width: 110,
       height: 100,
-      // color: Colors.green,
       child: Column(
         children: [
           ClipRRect(

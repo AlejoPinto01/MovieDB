@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:practica_final_2/models/models.dart';
 import 'package:practica_final_2/providers/movies_provider.dart';
-import 'package:practica_final_2/widgets/movie_search_preview.dart';
 import 'package:practica_final_2/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -37,8 +36,6 @@ class HomeScreen extends StatelessWidget {
               // Slider de pel·licules
               MovieSlider(movies: moviesProvider.popularMovies),
               // Poodeu fer la prova d'afegir-ne uns quants, veureu com cada llista és independent
-              // MovieSlider(),
-              // MovieSlider(),
             ],
           ),
         ),
@@ -47,11 +44,11 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
+//Barra de busqueda
 class CustomSearchDelegate extends SearchDelegate {
-  List<Movie> movies = [];
-  //List<String> searchTerms = [];
   MoviesProvider moviesProvider = MoviesProvider();
 
+  //Boton que limpiara la busqueda
   @override
   List<Widget>? buildActions(BuildContext context) {
     return [
@@ -64,6 +61,7 @@ class CustomSearchDelegate extends SearchDelegate {
     ];
   }
 
+  //Boton para volver a la pantalla principal
   @override
   Widget? buildLeading(BuildContext context) {
     return IconButton(
@@ -74,8 +72,10 @@ class CustomSearchDelegate extends SearchDelegate {
     );
   }
 
+  //Mostrar la lista de resultados al enviar
   @override
   Widget buildResults(BuildContext context) {
+    //Si no hay filtro de busqueda
     if (query.isEmpty) {
       return Center(
         child: Icon(
@@ -85,9 +85,12 @@ class CustomSearchDelegate extends SearchDelegate {
         ),
       );
     } else {
+      //Contruye la lista
       return FutureBuilder(
+        //Recupera las peliculas con el fitro desde el provider
         future: moviesProvider.getFilter(query),
         builder: (BuildContext context, AsyncSnapshot<List<Movie>> snapshot) {
+          //Si NO ha recibido informacion
           if (!snapshot.hasData) {
             return Container(
               child: Center(
@@ -95,11 +98,15 @@ class CustomSearchDelegate extends SearchDelegate {
               ),
             );
           } else {
+            //Guarda la info recuperada en una avar
             final movies = snapshot.data!;
 
+            //Si la lista recuperada esta vacia
             if (movies.isEmpty) {
+              //Avisa al usuario
               return Center(child: Text('No results for \"$query\"'));
             } else {
+              //Construye la lista
               return ListView.builder(
                 physics: BouncingScrollPhysics(),
                 itemCount: movies.length,
@@ -116,8 +123,10 @@ class CustomSearchDelegate extends SearchDelegate {
     }
   }
 
+  //Previsualiza la lista de NowPlaying mientras escribe
   @override
   Widget buildSuggestions(BuildContext context) {
+    //Si no hay filtro de busqueda
     if (query.isEmpty) {
       return Center(
         child: Icon(
@@ -127,16 +136,24 @@ class CustomSearchDelegate extends SearchDelegate {
         ),
       );
     } else {
+      //Inicializa una lista de pelis vacia
       List<Movie> previewMovies = [];
+
+      //Recorre la lista de NowPlaying
       for (Movie movieP in moviesProvider.onDisplayMovies) {
+        //Si coincide la busqueda con el titulo
         if (movieP.title.toLowerCase().contains(query.toLowerCase())) {
+          //Añadela a la lista de previsualizacion
           previewMovies.add(movieP);
         }
       }
 
+      //Si no encuentra coincidencias
       if (previewMovies.isEmpty) {
+        //Necesita enviar para realizar la busqueda total
         return Center(child: Text('Search all movies...'));
       } else {
+        //De lo contrario crea la lista de previsualizacion
         return ListView.builder(
           physics: BouncingScrollPhysics(),
           itemCount: previewMovies.length,

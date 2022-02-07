@@ -1,29 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:practica_final_2/models/models.dart';
-import 'package:practica_final_2/providers/movies_provider.dart';
 import 'package:practica_final_2/widgets/widgets.dart';
-import 'package:provider/provider.dart';
 
 class DetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: Canviar després per una instància de Peli
+    //Pillamos la pelicula pasada como argumento de la pagina
     final movie = ModalRoute.of(context)!.settings.arguments as Movie;
     print(movie.id.toString());
     return Scaffold(
       body: CustomScrollView(
         slivers: [
+          //Se la pasamos a los diferentes widgets por parametro
           _CustomAppBar(movie: movie),
           SliverList(
             delegate: SliverChildListDelegate(
               [
                 _PosterAndTitile(movie: movie),
-                _Overview(
-                  movie: movie,
-                ),
-                CastingCards(
-                  movieId: movie.id,
-                ),
+                _Overview(movie: movie),
+                CastingCards(movieId: movie.id),
               ],
             ),
           ),
@@ -56,13 +52,13 @@ class _CustomAppBar extends StatelessWidget {
           color: Colors.black12,
           padding: EdgeInsets.only(bottom: 10),
           child: Text(
-            movie.getMovieTitle,
+            movie.getMovieTitle, //Titulo de la pelicula en castellano
             style: TextStyle(fontSize: 16),
           ),
         ),
         background: FadeInImage(
           placeholder: AssetImage('assets/loading.gif'),
-          image: NetworkImage(movie.fullBackdropPath),
+          image: NetworkImage(movie.fullBackdropPath), //Imagen de backdrop
           fit: BoxFit.cover,
         ),
       ),
@@ -90,7 +86,7 @@ class _PosterAndTitile extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             child: FadeInImage(
               placeholder: AssetImage('assets/loading.gif'),
-              image: NetworkImage(movie.fullPosterPath),
+              image: NetworkImage(movie.fullPosterPath), //Poster pelicula
               height: 150,
               width: 100,
               fit: BoxFit.cover,
@@ -103,18 +99,17 @@ class _PosterAndTitile extends StatelessWidget {
             constraints: BoxConstraints(
               maxWidth: MediaQuery.of(context).size.width - 170,
             ),
-            //width: MediaQuery.of(context).size.width - 170,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  movie.getMovieTitle,
+                  movie.getMovieTitle, //Titulo pelicula en castellano
                   style: textTheme.headline5,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
                 ),
                 Text(
-                  movie.getOriginalTitle,
+                  movie.getOriginalTitle, //Titulo original pelicula
                   style: textTheme.subtitle1,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
@@ -126,7 +121,7 @@ class _PosterAndTitile extends StatelessWidget {
                       width: 5,
                     ),
                     Text(movie.getVoteAverage.toString(),
-                        style: textTheme.caption),
+                        style: textTheme.caption), //Valoracion pelicula
                   ],
                 )
               ],
@@ -150,7 +145,7 @@ class _Overview extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: Text(
-        movie.getOverview,
+        movie.getOverview, //Sinopsis pelicula
         textAlign: TextAlign.justify,
         style: Theme.of(context).textTheme.subtitle1,
       ),

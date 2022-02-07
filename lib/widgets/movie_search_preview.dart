@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'package:practica_final_2/models/models.dart';
 
+//Widget de previsualizacion de la pelicula para el buscador
 class SearchPreview extends StatelessWidget {
   Movie movie;
   SearchPreview({
@@ -12,9 +12,11 @@ class SearchPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      //Abre la pagina de detalles de la pelicula seleccionada
       onTap: () => Navigator.pushNamed(context, 'details', arguments: movie),
       child: Container(
         height: 100,
+        //Limitacion para que no salga el texto
         width: MediaQuery.of(context).size.width - 200,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
