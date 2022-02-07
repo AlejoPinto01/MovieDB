@@ -14,6 +14,7 @@ class MoviesProvider extends ChangeNotifier {
 
   List<Movie> onDisplayMovies = [];
   List<Movie> popularMovies = [];
+  List<Movie> searchMovies = [];
   Map<int, List<Cast>> casting = {};
   //List<Cast> casting = [];
 
@@ -69,5 +70,22 @@ class MoviesProvider extends ChangeNotifier {
     casting[movieId] = castingResponse.cast;
 
     return castingResponse.cast;
+  }
+
+  Future<List<Movie>> getFilter(String filter) async {
+    //https://api.themoviedb.org/3/movie/634649/credits?api_key=b484e3e33832dcea7c4887cec5124533&language=en-US
+    var url = Uri.https(_baseUrl, '/3/search/movie', {
+      'api_key': _apiKey,
+      'language': _language,
+      'page': _page,
+      'query': filter,
+    });
+
+    final result = await http.get(url);
+    final searchResponse = SearchResponse.fromJson(result.body);
+
+    searchMovies = searchResponse.results;
+
+    return searchResponse.results;
   }
 }

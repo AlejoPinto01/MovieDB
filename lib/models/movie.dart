@@ -17,19 +17,19 @@ class Movie {
   });
 
   bool adult;
-  String backdropPath;
-  List<int> genreIds;
+  String? backdropPath;
+  List<int>? genreIds;
   int id;
   String originalLanguage;
   String originalTitle;
   String overview;
   double popularity;
   String? posterPath;
-  DateTime releaseDate;
+  String? releaseDate;
   String title;
   bool video;
   double voteAverage;
-  int voteCount;
+  int? voteCount;
 
   get fullPosterPath {
     if (this.posterPath != null) {
@@ -75,7 +75,7 @@ class Movie {
         overview: json["overview"],
         popularity: json["popularity"].toDouble(),
         posterPath: json["poster_path"],
-        releaseDate: DateTime.parse(json["release_date"]),
+        releaseDate: json["release_date"],
         title: json["title"],
         video: json["video"],
         voteAverage: json["vote_average"].toDouble(),

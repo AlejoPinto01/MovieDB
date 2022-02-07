@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:practica_final_2/models/models.dart';
 import 'package:practica_final_2/providers/movies_provider.dart';
+import 'package:practica_final_2/widgets/movie_search_preview.dart';
 import 'package:practica_final_2/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -46,7 +48,9 @@ class HomeScreen extends StatelessWidget {
 }
 
 class CustomSearchDelegate extends SearchDelegate {
+  List<Movie> movies = [];
   List<String> searchTerms = [];
+  MoviesProvider moviesProvider = MoviesProvider();
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -72,11 +76,54 @@ class CustomSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return Text('data');
+    if (query.isEmpty) {
+      return Center(
+        child: Icon(
+          Icons.hourglass_empty,
+          size: 200,
+          color: Colors.grey,
+        ),
+      );
+    } else {
+      return FutureBuilder(
+        future: moviesProvider.getFilter(query),
+        builder: (BuildContext context, AsyncSnapshot<List<Movie>> snapshot) {
+          if (!snapshot.hasData) {
+            return Container(
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          } else {
+            final movies = snapshot.data!;
+
+            return ListView.builder(
+              physics: BouncingScrollPhysics(),
+              itemCount: movies.length,
+              itemBuilder: (BuildContext context, int index) {
+                return SearchPreview(
+                  movie: movies[index],
+                );
+              },
+            );
+          }
+        },
+      );
+    }
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return Text('data');
+    if (query.isEmpty) {
+      return Center(
+        child: Icon(
+          Icons.movie,
+          size: 200,
+          color: Colors.grey,
+        ),
+      );
+    } else {
+      return Container();
+    }
   }
 }

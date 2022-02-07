@@ -97,8 +97,11 @@ class _PosterAndTitile extends StatelessWidget {
           SizedBox(
             width: 20,
           ),
-          Container(
-            width: MediaQuery.of(context).size.width - 170,
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width - 170,
+            ),
+            //width: MediaQuery.of(context).size.width - 170,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
