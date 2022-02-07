@@ -24,6 +24,7 @@ class SearchPreview extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 child: Container(
                   width: 70,
+                  height: 90,
                   child: FadeInImage(
                     placeholder: AssetImage('assets/no-image.jpg'),
                     image: NetworkImage(movie.fullPosterPath),

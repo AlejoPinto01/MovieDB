@@ -92,6 +92,8 @@ class _PosterAndTitile extends StatelessWidget {
               placeholder: AssetImage('assets/loading.gif'),
               image: NetworkImage(movie.fullPosterPath),
               height: 150,
+              width: 100,
+              fit: BoxFit.cover,
             ),
           ),
           SizedBox(

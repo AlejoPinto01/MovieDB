@@ -49,7 +49,7 @@ class HomeScreen extends StatelessWidget {
 
 class CustomSearchDelegate extends SearchDelegate {
   List<Movie> movies = [];
-  List<String> searchTerms = [];
+  //List<String> searchTerms = [];
   MoviesProvider moviesProvider = MoviesProvider();
 
   @override
@@ -79,7 +79,7 @@ class CustomSearchDelegate extends SearchDelegate {
     if (query.isEmpty) {
       return Center(
         child: Icon(
-          Icons.hourglass_empty,
+          Icons.movie,
           size: 200,
           color: Colors.grey,
         ),
@@ -97,15 +97,19 @@ class CustomSearchDelegate extends SearchDelegate {
           } else {
             final movies = snapshot.data!;
 
-            return ListView.builder(
-              physics: BouncingScrollPhysics(),
-              itemCount: movies.length,
-              itemBuilder: (BuildContext context, int index) {
-                return SearchPreview(
-                  movie: movies[index],
-                );
-              },
-            );
+            if (movies.isEmpty) {
+              return Center(child: Text('No results for \"$query\"'));
+            } else {
+              return ListView.builder(
+                physics: BouncingScrollPhysics(),
+                itemCount: movies.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return SearchPreview(
+                    movie: movies[index],
+                  );
+                },
+              );
+            }
           }
         },
       );
@@ -123,7 +127,26 @@ class CustomSearchDelegate extends SearchDelegate {
         ),
       );
     } else {
-      return Container();
+      List<Movie> previewMovies = [];
+      for (Movie movieP in moviesProvider.onDisplayMovies) {
+        if (movieP.title.toLowerCase().contains(query.toLowerCase())) {
+          previewMovies.add(movieP);
+        }
+      }
+
+      if (previewMovies.isEmpty) {
+        return Center(child: Text('Search all movies...'));
+      } else {
+        return ListView.builder(
+          physics: BouncingScrollPhysics(),
+          itemCount: previewMovies.length,
+          itemBuilder: (BuildContext context, int index) {
+            return SearchPreview(
+              movie: previewMovies[index],
+            );
+          },
+        );
+      }
     }
   }
 }
